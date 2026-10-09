@@ -75,6 +75,8 @@ bash scripts/verify.sh
 
 This runs backend tests/lint/compilation, frontend unit tests/type checks/lint/production build, Playwright browser tests, and whitespace checks. Automated AI tests use mocked SDK responses, without paid calls. See `docs/PROGRESS.md` for actual results and `docs/VISUAL_EVALUATION.md` for ten-photo visual-quality acceptance.
 
+Verified: **141 backend tests, 26 frontend tests, and 18 desktop/mobile browser tests** passed, along with lint, type checks, Python compilation, and production build. [Private CI evidence](https://github.com/cadmieldubic/doodlesteps/actions/runs/37988321250).
+
 Live AI generation and photo-to-sketch resemblance have **not** been verified without a configured API key. Valid JSON alone is not evidence of a good drawing. The API implementation and error handling are tested with mocks; the deterministic demo drawings are evaluated separately in the browser.
 
 ## Project layout

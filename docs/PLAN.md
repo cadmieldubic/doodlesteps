@@ -1,5 +1,7 @@
 # Implementation plan
 
+Status: all MVP functionality is implemented. Backend, frontend, and desktop/mobile browser tests pass. Live AI photo quality, physical camera/printer behavior, and a child's paper reproduction remain explicitly pending evaluation. See `PROGRESS.md` for actual verification and commit evidence.
+
 ## Milestone 1 — private repository and foundation
 
 - Verify GitHub identity, create/verify private `cadmieldubic/doodlesteps`, initialize `main`, configure `origin`.
