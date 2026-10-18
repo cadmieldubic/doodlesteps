@@ -1,0 +1,44 @@
+name: Verify DoodleSteps
+
+on:
+  push:
+    branches: [main, 'feat/**']
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OPENAI_API_KEY: ''
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/work/playwright
+      PIP_CACHE_DIR: ${{ github.workspace }}/work/pip-cache
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '24'
+      - name: Install pinned dependencies
+        run: |
+          python -m venv backend/.venv
+          backend/.venv/bin/python -m pip install -r backend/requirements.lock
+          backend/.venv/bin/python -m pip install --no-deps -e 'backend[dev]'
+          npm install --global pnpm@11.25.0
+          pnpm --dir frontend install --frozen-lockfile
+      - name: Install test browser
+        run: pnpm --dir frontend exec playwright install --with-deps chromium
+      - name: Tests, lint, types, build, and real browser integration
+        run: bash scripts/verify.sh
